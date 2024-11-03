@@ -2,12 +2,12 @@ package domain
 
 import (
 	"context"
-
-	// "go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type SignupUsecase interface {
-	// RegisterUser(ctx context.Context, user *SignupForm) (*primitive.ObjectID, error)
+	VerifyOtp(ctx context.Context, otp *VerifyOtp)(*OTP, error)
+	RegisterUser(ctx context.Context, user *SignupForm) (*primitive.ObjectID, error)
 	GetUserByUserName(ctx context.Context, username string) (*SignupForm, error)
 	GetUserByEmail(ctx context.Context, Email string) (*SignupForm, error)
 	SendOtp(cxt context.Context, user *SignupForm,  stmpName, stmpPass string) error
@@ -15,8 +15,7 @@ type SignupUsecase interface {
 }
 
 type SignupRepository interface {
-	// (ctx, username)
-	// CreateUser(ctx context.Context, user *SignupForm) error
+	CreateUser(ctx context.Context, user *SignupForm) error
 	GetUserByUserName(ctx context.Context, username string) (*SignupForm, error)
 	GetUserByEmail(ctx context.Context, Email string) (*SignupForm, error)
 }

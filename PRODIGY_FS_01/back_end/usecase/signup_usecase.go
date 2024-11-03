@@ -11,6 +11,8 @@ import (
 	"github.com/Afomiat/PRODIGY_FULL-STACK_INTERNSHIP/domain"
 	"github.com/Afomiat/PRODIGY_FULL-STACK_INTERNSHIP/internal/employeeUtil"
 	"go.mongodb.org/mongo-driver/mongo"
+    "go.mongodb.org/mongo-driver/bson/primitive"
+// 
 )
 
 type SignupUsecase struct {
@@ -117,4 +119,52 @@ func (su *SignupUsecase) SendEmail(email string, otpValue, smtpusername string, 
 	fmt.Println("Email sent:", val_emal)
 
 	return val_emal
+}
+
+func (su *SignupUsecase) VerifyOtp(ctx context.Context, otp *domain.VerifyOtp)(*domain.OTP, error){
+    ctx, cancel := context.WithTimeout(ctx, su.contextTimeout)
+	defer cancel()
+
+    storedOTP, err := su.GetOtpByEmail(ctx, otp.Email)
+
+    if err != nil{
+        return nil, errors.New("OTP not found Please signup again")
+    }
+
+    if storedOTP.Value != otp.Value{
+        return nil, errors.New("invslid OTP")
+    }
+
+    if time.Now().After(storedOTP.ExpiresAt) {
+		return nil, errors.New("OTP expired")
+	}
+
+    err = su.otpRepo.DeleteOTP(ctx, storedOTP.Email)
+    if err != nil{
+        return nil, err
+    }
+
+    return storedOTP, nil
+}
+
+func (su *SignupUsecase) RegisterUser(ctx context.Context, user *domain.SignupForm)(*primitive.ObjectID, error){
+    ctx, cancel := context.WithTimeout(ctx, su.contextTimeout)
+    defer cancel()
+
+    hashedPass, err := employeeUtil.HassPassword(user.Password)
+
+    if err != nil{
+        return nil, err
+    }
+
+    addUser := domain.SignupForm{
+        ID: primitive.NewObjectID(),
+        Username: user.Username,
+        Password: hashedPass,
+        Email: user.Email,
+        Role: "user",
+    }
+    err = su.signupRepo.CreateUser(ctx, &addUser)
+    
+    return &addUser.ID, err
 }
