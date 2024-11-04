@@ -2,13 +2,7 @@ package domain
 
 import "go.mongodb.org/mongo-driver/bson/primitive"
 
-type Role string
 
-const (
-	UserCollection      = "users"
-	AdminRole      Role = "ADMIN"
-	UserRole       Role = "USER"
-)
 
 type SignupForm struct {
 	ID       primitive.ObjectID `json:"_ID,omitempty" bson:"_ID,omitempty"`

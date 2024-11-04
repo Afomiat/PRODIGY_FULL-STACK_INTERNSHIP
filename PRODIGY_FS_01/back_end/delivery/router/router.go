@@ -11,5 +11,6 @@ import (
 func Setup(env *config.Env, timeout time.Duration, db *mongo.Database, r *gin.Engine) {
 	PublicRout := r.Group("")
 	NewSignUpRouter(env, timeout, db, PublicRout)
+	NewLogInRouter(env, timeout, db, PublicRout)
 
 }

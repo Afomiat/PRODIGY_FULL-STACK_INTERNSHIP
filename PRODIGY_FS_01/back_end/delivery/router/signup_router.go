@@ -14,7 +14,7 @@ import (
 )
 
 func NewSignUpRouter(env *config.Env, timeout time.Duration, db *mongo.Database, Group *gin.RouterGroup) {
-	userR := repository.NewSignupRepo(db, domain.UserCollection)
+	userR := repository.NewSignupRepo(db, domain.CollectionUser)
 	otpR := repository.NewOtpRepository(db, domain.OtpCollection)
 
 	signUsecase := usecase.NewSignupUsecase(userR, otpR, timeout, env)
