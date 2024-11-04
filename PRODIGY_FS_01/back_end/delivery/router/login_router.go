@@ -20,6 +20,6 @@ func NewLogInRouter(env *config.Env, timeout time.Duration, db *mongo.Database, 
 	LoginController := controller.NewTokenController(LoginUsecase, env)
 
 	Group.POST("/login", LoginController.Login)
-	// Group.POST("/refresh", LoginController.RefreshTokenHandler)
+	Group.POST("/refresh", LoginController.RefreshTokenHandler)
 
 }

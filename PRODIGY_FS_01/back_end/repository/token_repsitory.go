@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/Afomiat/PRODIGY_FULL-STACK_INTERNSHIP/domain"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -23,3 +24,8 @@ func (repo *MongoTokenRepository) SaveToken(ctx context.Context, token *domain.T
 	return err
 }
 
+func (repo *MongoTokenRepository) FindTokenByRefreshToken(ctx context.Context, refreshToken string) (*domain.Token, error) {
+	var token domain.Token
+	err := repo.collection.FindOne(ctx, bson.M{"refresh_token": refreshToken}).Decode(&token)
+	return &token, err
+}

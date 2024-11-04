@@ -58,3 +58,11 @@ func (lu *loginUsecase) SaveRefreshToken(c context.Context, token *domain.Token)
 
 	return lu.tokenRepository.SaveToken(ctx, token)
 }
+
+func (lu *loginUsecase) CheckRefreshToken(c context.Context, refreshToken string) (*domain.Token, error) {
+	ctx, cancel := context.WithTimeout(c, lu.contextTimeout)
+	defer cancel()
+
+	return lu.tokenRepository.FindTokenByRefreshToken(ctx, refreshToken)
+
+}

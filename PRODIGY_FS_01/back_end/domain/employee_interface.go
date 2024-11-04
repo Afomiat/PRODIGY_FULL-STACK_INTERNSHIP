@@ -31,7 +31,7 @@ type LoginUsecase interface {
 	CreateAccessToken(user *User, secret string, expiry int) (string, error)
 	CreateRefreshToken(user *User, secret string, expiry int) (string, error)
 	SaveRefreshToken(c context.Context, token *Token) error
-	// CheckRefreshToken(c context.Context, refreshToken string) (*Token, error)
+	CheckRefreshToken(c context.Context, refreshToken string) (*Token, error)
 }
 
 type UserRepository interface {
@@ -51,5 +51,5 @@ type TokenRepository interface {
 	SaveToken(ctx context.Context, token *Token) error
 	// FindTokenByAccessToken(ctx context.Context, accessToken string) (*Token, error)
 	// DeleteToken(ctx context.Context, tokenID primitive.ObjectID) error
-	// FindTokenByRefreshToken(ctx context.Context, refreshToken string) (*Token, error)
+	FindTokenByRefreshToken(ctx context.Context, refreshToken string) (*Token, error)
 }
