@@ -5,9 +5,9 @@ import "go.mongodb.org/mongo-driver/bson/primitive"
 type Role string
 
 const (
-	CollectionUser      = "users"
+	CollectionUser      = "employees"
 	AdminRole      Role = "ADMIN"
-	UserRole       Role = "USER"
+	EmployeeRole       Role = "EMPLOYEE"
 )
 type ContactInfo struct {
 	Address      string `bson:"address"`

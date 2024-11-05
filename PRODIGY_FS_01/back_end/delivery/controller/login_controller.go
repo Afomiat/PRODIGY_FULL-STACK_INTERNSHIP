@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
@@ -32,6 +33,7 @@ func (lc *LoginController) Login(c *gin.Context) {
 	}
 
 	user, err := lc.LoginUsecase.AuthenticateUser(c, &loginUser)
+	fmt.Print("user in login controller",user)
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid email or password"})
 		return
@@ -61,32 +63,40 @@ func (lc *LoginController) Login(c *gin.Context) {
 		return
 	}
 
+		// Set the refresh token as an HTTP-only, secure cookie
+	c.SetCookie(
+		"refresh_token",      // Cookie name
+		refreshToken,         // Value
+		int((24 * time.Hour * time.Duration(lc.Env.RefreshTokenExpiryHour)).Seconds()), // Expiration time in seconds
+		"/",                  // Path
+		"",                   // Domain, leave empty to default to the request's domain
+		true,                 // Secure (only sent over HTTPS)
+		true,                 // HttpOnly (not accessible via JavaScript)
+	)
 	resp := domain.LoginResponse{
 		ID:           user.ID,
 		AcessToken:   accessToken,
-		RefreshToken: refreshToken,
+	
 	}
 
 	c.JSON(http.StatusOK, gin.H{"data": resp})
 }
 
 func (lc *LoginController) RefreshTokenHandler(c *gin.Context) {
-
-	var req struct {
-		RefreshToken string `json:"refresh_token" binding:"required"`
-	}
-
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
+	// Retrieve the refresh token from the cookies
+	refreshToken, err := c.Cookie("refresh_token")
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "No refresh token provided in cookies"})
 		return
 	}
-	claims, err := tokenutil.VerifyToken(req.RefreshToken, lc.Env.RefreshTokenSecret)
 
+	claims, err := tokenutil.VerifyToken(refreshToken, lc.Env.RefreshTokenSecret)
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid refresh token"})
 		return
 	}
-	_, err = lc.LoginUsecase.CheckRefreshToken(c, req.RefreshToken)
+
+	_, err = lc.LoginUsecase.CheckRefreshToken(c, refreshToken)
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "the user is logged out."})
 		return
@@ -95,15 +105,16 @@ func (lc *LoginController) RefreshTokenHandler(c *gin.Context) {
 	user := domain.SignupForm{
 		Username: claims.Username,
 		Email:    claims.Email,
-		ID:   claims.UserID,
+		ID:       claims.UserID,
 	}
-	newaccessToken, err := tokenutil.CreateAccessToken(&user, lc.Env.AccessTokenSecret, lc.Env.AccessTokenExpiryHour)
+	newAccessToken, err := tokenutil.CreateAccessToken(&user, lc.Env.AccessTokenSecret, lc.Env.AccessTokenExpiryHour)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
+	// Return the new access token in the response
 	c.JSON(http.StatusOK, gin.H{
-		"access_token": newaccessToken,
+		"access_token": newAccessToken,
 	})
 }

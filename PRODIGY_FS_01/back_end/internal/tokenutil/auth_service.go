@@ -10,7 +10,7 @@ import (
 func VerifyToken(tokenString string, secret string) (*domain.JwtCustomClaims, error) {
     claims := &domain.JwtCustomClaims{}
     token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
-        return []byte(secret), nil  // Use the secret from .env
+        return []byte(secret), nil  
     })
     if err != nil {
         return nil, err

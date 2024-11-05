@@ -3,6 +3,7 @@ package usecase
 import (
 	"context"
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/Afomiat/PRODIGY_FULL-STACK_INTERNSHIP/config"
@@ -28,20 +29,22 @@ func NewLoginUsecase(loginRepo domain.UserRepository, tokenRepo domain.TokenRepo
 }
 
 func (lu *loginUsecase) AuthenticateUser(c context.Context, login *domain.AuthLogin) (*domain.User, error) {
-	ctx, cancel := context.WithTimeout(c, lu.contextTimeout)
-	defer cancel()
+    ctx, cancel := context.WithTimeout(c, lu.contextTimeout)
+    defer cancel()
 
-	user, err := lu.userRepository.GetUserByEmail(ctx, login.Email)
-	if err != nil {
-		return nil, errors.New("invalid Email")
-	}
+    user, err := lu.userRepository.GetUserByEmail(ctx, login.Email)
+    if err != nil {
+        return nil, errors.New("invalid Email")
+    }
 
-	err = employeeUtil.ComparePassword(user.Password, login.Password)
-	if err != nil {
-		return nil, errors.New("invalid credentials")
-	}
+    fmt.Println("Retrieved User:", user)
 
-	return user, nil
+    err = employeeUtil.ComparePassword(user.Password, login.Password)
+    if err != nil {
+        return nil, errors.New("invalid credentials")
+    }
+
+    return user, nil
 }
 
 func (lu *loginUsecase) CreateAccessToken(user *domain.User, secret string, expiry int) (string, error) {

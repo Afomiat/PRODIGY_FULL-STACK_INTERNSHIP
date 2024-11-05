@@ -34,6 +34,13 @@ func HassPassword(password string) (string, error) {
 }
 
 func ComparePassword(hashedPassword, password string) error {
-	err := bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
-	return err
+    fmt.Println("Hashed Password:", hashedPassword)
+    fmt.Println("Input Password:", password)
+
+    err := bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
+    if err != nil {
+        fmt.Println("Error comparing passwords:", err)
+        return fmt.Errorf("invalid password")
+    }
+    return nil
 }

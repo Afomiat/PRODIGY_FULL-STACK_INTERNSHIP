@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/Afomiat/PRODIGY_FULL-STACK_INTERNSHIP/domain"
 	"go.mongodb.org/mongo-driver/bson"
@@ -25,5 +26,7 @@ func (u *LoginRepo) GetUserByEmail(c context.Context, email string) (*domain.Use
 	if err != nil {
 		return nil, err
 	}
+
+	fmt.Print(user, "user in get user by email /////")
 	return user, nil
 }

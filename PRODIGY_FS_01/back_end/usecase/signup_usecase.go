@@ -56,7 +56,6 @@ func (su *SignupUsecase) GetUserByEmail(ctx context.Context, Email string) (*dom
 }
 
 func (su *SignupUsecase) SendOtp(c context.Context, user *domain.SignupForm, smtpusername, smtppassword string) error {
-    // Retrieve existing OTP if any
     storedOTP, err := su.GetOtpByEmail(c, user.Email)
     if err != nil && err != mongo.ErrNoDocuments {
         return err
@@ -67,13 +66,11 @@ func (su *SignupUsecase) SendOtp(c context.Context, user *domain.SignupForm, smt
             return errors.New("OTP already sent")
         }
 
-        // Delete the expired OTP
         if err := su.otpRepo.DeleteOTP(c, storedOTP.Email); err != nil {
             return err
         }
     }
 
-    // Generate a new OTP
     otp := domain.OTP{
         Value:     employeeUtil.GenerateOTP(),
         Username:  user.Username,
@@ -83,13 +80,11 @@ func (su *SignupUsecase) SendOtp(c context.Context, user *domain.SignupForm, smt
         ExpiresAt: time.Now().Add(time.Minute * 5),
     }
 
-    // Save the new OTP
     if err := su.otpRepo.SaveOTP(c, &otp); err != nil {
         return err
     }
 	fmt.Println("OTP saved ******************************:", otp)
 
-    // Send the OTP via email
     if err := su.SendEmail(user.Email, otp.Value, smtpusername, smtppassword); err != nil {
         return err
     }
@@ -162,7 +157,7 @@ func (su *SignupUsecase) RegisterUser(ctx context.Context, user *domain.SignupFo
         Username: user.Username,
         Password: hashedPass,
         Email: user.Email,
-        Role: "user",
+        Role: string(domain.EmployeeRole),
     }
     err = su.signupRepo.CreateUser(ctx, &addUser)
     
