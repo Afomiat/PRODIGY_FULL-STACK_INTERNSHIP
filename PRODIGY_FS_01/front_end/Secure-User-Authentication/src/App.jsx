@@ -1,10 +1,22 @@
-import { useState } from 'react'
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Login from './components/Auth/Login';
+import Signup from './components/Auth/Signup';
+import OTPVerification from './components/Auth/OTPVerification';
+import ProtectedRoute from './components/ProtectedRoute';
 
-function App() {
+const App = () => {
+    return (
+        <Router>
+            <Switch>
+                <Route path="/login" component={Login} />
+                <Route path="/signup" component={Signup} />
+                <Route path="/otp-verification" component={OTPVerification} />
+                {/* Protected routes can be defined here */}
+                {/* <ProtectedRoute path="/dashboard" component={Dashboard} allowedRoles={['admin']} /> */}
+            </Switch>
+        </Router>
+    );
+};
 
-  return (
-    <h1>Working</h1>
-  )
-}
-
-export default App
+export default App;
