@@ -1,22 +1,25 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './components/Auth/Login';
 import Signup from './components/Auth/Signup';
 import OTPVerification from './components/Auth/OTPVerification';
+import Success from './components/Success';
 import ProtectedRoute from './components/ProtectedRoute';
 
-const App = () => {
-    return (
-        <Router>
-            <Switch>
-                <Route path="/login" component={Login} />
-                <Route path="/signup" component={Signup} />
-                <Route path="/otp-verification" component={OTPVerification} />
-                {/* Protected routes can be defined here */}
-                {/* <ProtectedRoute path="/dashboard" component={Dashboard} allowedRoles={['admin']} /> */}
-            </Switch>
-        </Router>
-    );
-};
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/verify" element={<OTPVerification />} />
+        <Route path="/success" element={<Success />} />
+        <Route path="/" element={<ProtectedRoute />}>
+          <Route path="/" element={<div>Protected Home</div>} />
+        </Route>
+      </Routes>
+    </Router>
+  );
+}
 
 export default App;

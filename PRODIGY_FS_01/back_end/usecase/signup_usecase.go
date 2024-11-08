@@ -116,31 +116,34 @@ func (su *SignupUsecase) SendEmail(email string, otpValue, smtpusername string, 
 	return val_emal
 }
 
-func (su *SignupUsecase) VerifyOtp(ctx context.Context, otp *domain.VerifyOtp)(*domain.OTP, error){
+func (su *SignupUsecase) VerifyOtp(ctx context.Context, otp *domain.VerifyOtp) (*domain.OTP, error) {
     ctx, cancel := context.WithTimeout(ctx, su.contextTimeout)
-	defer cancel()
+    defer cancel()
 
     storedOTP, err := su.GetOtpByEmail(ctx, otp.Email)
-
-    if err != nil{
-        return nil, errors.New("OTP not found Please signup again")
+    if err != nil || storedOTP == nil {
+        if storedOTP == nil {
+            return nil, errors.New("OTP not found for the provided email. Please signup again.")
+        }
+        return nil, err
     }
 
-    if storedOTP.Value != otp.Value{
-        return nil, errors.New("invslid OTP")
+    if storedOTP.Value != otp.Value {
+        return nil, errors.New("Invalid OTP.")
     }
 
     if time.Now().After(storedOTP.ExpiresAt) {
-		return nil, errors.New("OTP expired")
-	}
+        return nil, errors.New("OTP has expired.")
+    }
 
     err = su.otpRepo.DeleteOTP(ctx, storedOTP.Email)
-    if err != nil{
+    if err != nil {
         return nil, err
     }
 
     return storedOTP, nil
 }
+
 
 func (su *SignupUsecase) RegisterUser(ctx context.Context, user *domain.SignupForm)(*primitive.ObjectID, error){
     ctx, cancel := context.WithTimeout(ctx, su.contextTimeout)

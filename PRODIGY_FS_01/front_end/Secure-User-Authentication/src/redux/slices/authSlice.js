@@ -1,53 +1,59 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { login, signup, verifyOTP, refreshToken } from '../../api/authApi';
+import { verifyOTP as verifyOTPApi, signup as signupApi } from '../../api/authApi';
 
-export const loginUser = createAsyncThunk('auth/login', async (credentials) => {
-    const response = await login(credentials);
+export const verifyOTP = createAsyncThunk('auth/verifyOTP', async (otp, { rejectWithValue }) => {
+  try {
+    const response = await verifyOTPApi(otp);
     return response;
+  } catch (error) {
+    return rejectWithValue(error.response.data);
+  }
 });
 
-export const signupUser = createAsyncThunk('auth/signup', async (userData) => {
-    const response = await signup(userData);
+export const signup = createAsyncThunk('auth/signup', async (userInfo, { rejectWithValue }) => {
+  try {
+    const response = await signupApi(userInfo);
     return response;
-});
-
-export const verifyOtp = createAsyncThunk('auth/verifyOtp', async (data) => {
-    const response = await verifyOTP(data);
-    return response;
+  } catch (error) {
+    return rejectWithValue(error.response.data);
+  }
 });
 
 const authSlice = createSlice({
-    name: 'auth',
-    initialState: {
-        isAuthenticated: false,
-        role: null,
-        accessToken: null,
+  name: 'auth',
+  initialState: { user: null, token: null, status: null, error: null },
+  reducers: {
+    setUser: (state, action) => {
+      state.user = action.payload;
     },
-    reducers: {
-        setUserRole(state, action) {
-            state.role = action.payload;
-        },
-        logout(state) {
-            state.isAuthenticated = false;
-            state.role = null;
-            state.accessToken = null;
-        },
+    setToken: (state, action) => {
+      state.token = action.payload;
     },
-    extraReducers: (builder) => {
-        builder
-            .addCase(loginUser.fulfilled, (state, action) => {
-                state.isAuthenticated = true;
-                state.accessToken = action.payload.accessToken; // Assume this is returned
-                state.role = action.payload.role; // Assume this is returned
-            })
-            .addCase(signupUser.fulfilled, (state, action) => {
-                // Handle signup success
-            })
-            .addCase(verifyOtp.fulfilled, (state, action) => {
-                // Handle OTP verification success
-            });
-    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(verifyOTP.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(verifyOTP.fulfilled, (state) => {
+        state.status = 'succeeded';
+      })
+      .addCase(verifyOTP.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload;
+      })
+      .addCase(signup.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(signup.fulfilled, (state) => {
+        state.status = 'succeeded';
+      })
+      .addCase(signup.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload;
+      });
+  },
 });
 
-export const { setUserRole, logout } = authSlice.actions;
+export const { setUser, setToken } = authSlice.actions;
 export default authSlice.reducer;

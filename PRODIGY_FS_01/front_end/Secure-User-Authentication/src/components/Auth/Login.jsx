@@ -1,24 +1,25 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { login } from '../../redux/slices/authSlice';
+import { Link } from 'react-router-dom';
 
-const Login = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const dispatch = useDispatch();
+function Login() {
+  const dispatch = useDispatch();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        dispatch(login({ email, password }));
-    };
+  const handleSubmit = () => {
+    dispatch({ type: 'auth/login', payload: { username, password } });
+  };
 
-    return (
-        <form onSubmit={handleSubmit}>
-            <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-            <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-            <button type="submit">Login</button>
-        </form>
-    );
-};
+  return (
+    <div>
+      <h2>Login</h2>
+      <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" />
+      <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
+      <button onClick={handleSubmit}>Login</button>
+      <p>Don't have an account? <Link to="/signup">Sign up</Link></p>
+    </div>
+  );
+}
 
 export default Login;
