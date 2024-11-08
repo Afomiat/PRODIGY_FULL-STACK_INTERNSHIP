@@ -1,11 +1,17 @@
-// // src/utils/tokenHelpers.js
-// export const setAccessToken = (token) => localStorage.setItem('accessToken', token);
-// export const getAccessToken = () => localStorage.getItem('accessToken');
-// export const removeAccessToken = () => localStorage.removeItem('accessToken');
+// Utility functions for handling tokens
 
-// export const isTokenExpired = (token) => {
-//     if (!token) return true;
-
-//     const payload = JSON.parse(atob(token.split('.')[1]));
-//     return payload.exp * 1000 < Date.now();
-// };
+// Save the access token in local storage
+export const saveToken = (token) => {
+    localStorage.setItem('access_token', token);
+  };
+  
+  // Retrieve the access token from local storage
+  export const getToken = () => {
+    return localStorage.getItem('access_token');
+  };
+  
+  // Remove the access token from local storage
+  export const removeToken = () => {
+    localStorage.removeItem('access_token');
+  };
+  

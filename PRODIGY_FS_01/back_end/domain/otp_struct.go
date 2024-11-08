@@ -16,6 +16,6 @@ type OTP struct {
 }
 
 type VerifyOtp struct {
-	Value string `bson:"value"`
-	Email string `bson:"email"`
+	Value string `json:"otp" bson:"value"` 
+	Email string `json:"email" bson:"email"`
 }

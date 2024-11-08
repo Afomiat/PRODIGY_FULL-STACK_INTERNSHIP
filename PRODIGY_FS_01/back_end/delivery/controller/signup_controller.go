@@ -60,6 +60,8 @@ func (sc *SignupController) Verify(ctx *gin.Context) {
         return
     }
 
+    fmt.Println("Received OTP verification request:", otp)  // Add logging
+
     OtpResponse, err := sc.SignupUsecase.VerifyOtp(ctx, &otp)
     if err != nil {
         ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -74,6 +76,8 @@ func (sc *SignupController) Verify(ctx *gin.Context) {
     }
     sc.Register(ctx, user)
 }
+
+
 
 func (sc *SignupController) Register(ctx *gin.Context, user domain.SignupForm) {
     userId, err := sc.SignupUsecase.RegisterUser(ctx, &user)
