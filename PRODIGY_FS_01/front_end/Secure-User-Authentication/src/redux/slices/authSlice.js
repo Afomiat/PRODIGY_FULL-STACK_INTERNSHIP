@@ -20,14 +20,18 @@ export const signupAsync = createAsyncThunk('auth/signup', async (userInfo, { re
   }
 });
 
-export const loginAsync = createAsyncThunk('auth/login', async (credentials, { rejectWithValue }) => {
-  try {
-    const response = await login(credentials);
-    return response;
-  } catch (error) {
-    return rejectWithValue(error.response.data);
+export const loginAsync = createAsyncThunk(
+  'auth/login', // Action type
+  async (credentials, { rejectWithValue }) => {
+    try {
+      const response = await login(credentials); // Make sure login is correctly defined in authApi.js
+      return response;  // Will be handled as payload in fulfilled case
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);  // Handle error case
+    }
   }
-});
+);
+
 
 const authSlice = createSlice({
   name: 'auth',
@@ -67,8 +71,7 @@ const authSlice = createSlice({
       })
       .addCase(loginAsync.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.user = action.payload; // Ensure user state is updated correctly
-        state.token = action.payload.accessToken;
+        state.user = action.payload;
       })
       .addCase(loginAsync.rejected, (state, action) => {
         state.status = 'failed';
