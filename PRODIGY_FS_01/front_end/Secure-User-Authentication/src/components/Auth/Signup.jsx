@@ -14,7 +14,7 @@ function Signup() {
   const handleSubmit = () => {
     dispatch(signupAsync({ email, username, password })).then((action) => {
       if (signupAsync.fulfilled.match(action)) {
-        navigate('/verify');  // Redirect to OTP verification page after successful signup
+        navigate('/verify', { state: { email } });  // Pass email to OTP verification page
       }
     });
   };
