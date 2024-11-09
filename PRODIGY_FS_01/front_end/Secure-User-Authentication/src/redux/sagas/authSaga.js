@@ -4,9 +4,9 @@ import { login, signup, verifyOTP } from '../../api/authApi';
 
 function* handleLogin(action) {
   try {
-    const { user, token } = yield call(login, action.payload);
+    const { user, accessToken } = yield call(login, action.payload);
     yield put(setUser(user));
-    yield put(setToken(token));
+    yield put(setToken(accessToken));
   } catch (error) {
     console.error('Login failed:', error);
   }

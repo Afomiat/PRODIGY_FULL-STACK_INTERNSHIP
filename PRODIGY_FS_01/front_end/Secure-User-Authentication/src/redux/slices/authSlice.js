@@ -1,17 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { login, signup, verifyOTP } from '../../api/authApi';
 
-
 export const verifyOTPAsync = createAsyncThunk('auth/verifyOTP', async (otpData, { rejectWithValue }) => {
   try {
     const response = await verifyOTP(otpData);
     return response;
   } catch (error) {
-    console.error('Verification error:', error);  // Log the error
+    console.error('Verification error:', error);
     return rejectWithValue(error.response.data);
   }
 });
-
 
 export const signupAsync = createAsyncThunk('auth/signup', async (userInfo, { rejectWithValue }) => {
   try {
@@ -69,6 +67,7 @@ const authSlice = createSlice({
       })
       .addCase(loginAsync.fulfilled, (state, action) => {
         state.status = 'succeeded';
+        state.user = action.payload; // Ensure user state is updated correctly
         state.token = action.payload.accessToken;
       })
       .addCase(loginAsync.rejected, (state, action) => {
@@ -79,4 +78,5 @@ const authSlice = createSlice({
 });
 
 export const { setUser, setToken } = authSlice.actions;
+
 export default authSlice.reducer;

@@ -13,4 +13,6 @@ type LoginResponse struct {
 	ID           primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
 	AcessToken   string             `json:"access_token"`
 	RefreshToken string             `json:"refresh_token"`
+	Email        string             `json:"email"`
+	Role 	   string             `json:"role"`
 }

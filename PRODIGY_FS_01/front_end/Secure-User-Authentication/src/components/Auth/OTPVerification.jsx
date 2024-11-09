@@ -16,7 +16,7 @@ function OTPVerification() {
     if (!email) return; // Ensure email is available
     dispatch(verifyOTPAsync({ email, otp })).then((action) => {
       if (verifyOTPAsync.fulfilled.match(action)) {
-        navigate('/success');  // Redirect to success page after successful OTP verification
+        navigate('/employee/dashboard');  // Redirect to success page after successful OTP verification
       }
     });
   };

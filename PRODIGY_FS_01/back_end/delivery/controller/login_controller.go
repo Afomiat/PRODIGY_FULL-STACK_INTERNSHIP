@@ -76,11 +76,12 @@ func (lc *LoginController) Login(c *gin.Context) {
 	resp := domain.LoginResponse{
 		ID:           user.ID,
 		AcessToken:   accessToken,
+		Email:  user.Email, // Include the user's email 
+		Role: string(user.Role),
 	
 	}
 
-	c.JSON(http.StatusOK, gin.H{"data": resp})
-}
+	c.JSON(http.StatusOK, resp)}
 
 func (lc *LoginController) RefreshTokenHandler(c *gin.Context) {
 	// Retrieve the refresh token from the cookies
