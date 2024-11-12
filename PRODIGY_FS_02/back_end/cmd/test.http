@@ -1,0 +1,18 @@
+POST http://localhost:8080/signup
+Content-Type: application/json
+
+{
+  "username": "all",
+  "password": "123456789",
+  "email": "afomiat79@gmail.com"
+}
+
+# POST http://localhost:8080/verify
+# Content-Type: application/json
+
+# {
+#   "value": "440424",
+ 
+#   "email": "afomiat79@gmail.com"
+# }
+

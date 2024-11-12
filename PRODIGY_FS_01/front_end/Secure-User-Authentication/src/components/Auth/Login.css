@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: 'Roboto',sans-serif; 
+
+
+  /* background-color: #212e2b; */
+  background: linear-gradient(50deg, rgb(19, 18, 18) 20%, rgb(36, 44, 43) 50%, rgb(37, 10, 2) 80%);
+
+  margin: 0;
+  color: #fff;
+}
+
+.login-container {
+  /* opacity: 1; */
+  width: 120%;
+  height: 450px;
+  background-color:transparent;
+  padding: 2rem;
+  border-radius: 30px;
+  box-shadow: 0 4px 8px rgba(254, 255, 221, 0.7);
+  text-align: center;
+
+}
+
+.login-title {
+  font-size: 32px;
+  margin-bottom: 4rem;
+  color: #f3eeeb;
+}
+
+.login-inner {
+  margin-top: 3rem;
+  /* margin-bottom: 1rem; */
+  /* width: 90%; */
+}
+
+.login-input {
+  width: 86%;
+  height: 40px;
+  /* padding: 0.75rem; */
+  padding-left: 2.5rem; /* Space for the left icon */
+  /* padding-right: 2.5rem; Space for the right icon */
+  border-radius: 15px;
+  border: none;
+  background-color: #fcfafa;
+  color: #fff; /* Color of the entered text */
+  font-size: 16px;
+  font-family: 'Roboto', sans-serif; /* Set font for entered text */
+  font-weight: 400; /* Font weight for regular text */
+  /* outline: none; */
+  /* transition: all 0.3s ease; */
+}
+.login-input::placeholder{
+  color: #6d6b6a;
+  font-family: 'Roboto';
+  font-size: 14px;
+  padding-left: 10px;
+}
+
+
+.login-button {
+  width: 96%;
+  padding: 0.75rem;
+  margin-bottom: 3rem;
+  margin-top: 40px;
+  border: none;
+  border-radius: 4px;
+  background-color: #123b32;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 15px;
+
+}
+
+.login-button:hover {
+  background-color: #8f4311;
+}
+
+.login-link {
+  color: #d38950;
+  text-decoration: none;
+}
+
+.login-link:hover {
+  text-decoration: underline;
+}
+
+.login-error {
+  color: red;
+  margin-top: 1rem;
+}
+
+.icon-pass {
+  position: relative;
+  left: 10px;
+  top: 50%;
+  /* transform: translateY(-50%); */
+  color: #9c5b2a;
+}
+.toggle-password{
+  position: relative;
+  bottom: 30px;
+  left: 160px;
+  color: #9c5b2a;
+}
+.icon-mail {
+  position: relative;
+  color: #9c5b2a;
+  left: -165px;
+  top: 30px;
+}
+.icon-pass{
+  position: relative;
+  color: #9c5b2a;
+  left: -165px;
+  top: 30px;
+}
+#email{
+  margin-bottom: 20px;
+}
