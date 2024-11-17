@@ -63,20 +63,19 @@ func (lc *LoginController) Login(c *gin.Context) {
 		return
 	}
 
-		// Set the refresh token as an HTTP-only, secure cookie
 	c.SetCookie(
-		"refresh_token",      // Cookie name
-		refreshToken,         // Value
-		int((24 * time.Hour * time.Duration(lc.Env.RefreshTokenExpiryHour)).Seconds()), // Expiration time in seconds
-		"/",                  // Path
-		"",                   // Domain, leave empty to default to the request's domain
-		true,                 // Secure (only sent over HTTPS)
-		true,                 // HttpOnly (not accessible via JavaScript)
+		"refresh_token",      
+		refreshToken,         
+		int((24 * time.Hour * time.Duration(lc.Env.RefreshTokenExpiryHour)).Seconds()), 
+		"/",                  
+		"",                   
+		true,                 
+		true,                 
 	)
 	resp := domain.LoginResponse{
 		ID:           user.ID,
 		AcessToken:   accessToken,
-		Email:  user.Email, // Include the user's email 
+		Email:  user.Email, 
 		Role: string(user.Role),
 	
 	}
@@ -84,7 +83,6 @@ func (lc *LoginController) Login(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)}
 
 func (lc *LoginController) RefreshTokenHandler(c *gin.Context) {
-	// Retrieve the refresh token from the cookies
 	refreshToken, err := c.Cookie("refresh_token")
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "No refresh token provided in cookies"})
@@ -114,7 +112,6 @@ func (lc *LoginController) RefreshTokenHandler(c *gin.Context) {
 		return
 	}
 
-	// Return the new access token in the response
 	c.JSON(http.StatusOK, gin.H{
 		"access_token": newAccessToken,
 	})

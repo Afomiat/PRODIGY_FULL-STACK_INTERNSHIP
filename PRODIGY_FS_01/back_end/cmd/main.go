@@ -10,32 +10,25 @@ import (
 )
 
 func main() {
-    // Load environment variables
     env := config.NewEnv()
 
-    // Connect to MongoDB
     dbClient := config.ConnectMongoDB(env)
     db := dbClient.Database(env.DBName)
 
-    // Set up server timeout
     timeout := time.Duration(env.ContextTimeout) * time.Second
 
-    // Initialize Gin router
     r := gin.Default()
 
-    // Configure CORS middleware
     r.Use(cors.New(cors.Config{
-        AllowOrigins:     []string{"http://localhost:5173"}, // Frontend origin
+        AllowOrigins:     []string{"http://localhost:5173"}, 
         AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
         AllowHeaders:     []string{"Content-Type", "Authorization"},
-        AllowCredentials: true,  // Set to true if your frontend sends credentials (e.g., cookies, Authorization headers)
+        AllowCredentials: true,  
         MaxAge:           12 * time.Hour,
     }))
 
-    // Set up routes
     router.Setup(env, timeout, db, r)
 
-    // Start the server
     if err := r.Run(env.LocalServerPort); err != nil {
         log.Fatalf("Failed to start the server: %v", err)
     }

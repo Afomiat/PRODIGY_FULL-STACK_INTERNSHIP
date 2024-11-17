@@ -3,8 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
 import { signupAsync } from '../../redux/slices/authSlice';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope, faUser, faLock, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import './Signup.css'; // Ensure you have a corresponding CSS file
+import { faEnvelope, faUser, faLock, faEye, faEyeSlash , faHandPaper} from '@fortawesome/free-solid-svg-icons';
+import './Signup.css';
+import signImage from '../../assets/signup.avif';
 
 function Signup() {
   const dispatch = useDispatch();
@@ -12,19 +13,25 @@ function Signup() {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
+  const [showPassword, setShowPassword] = useState(false); 
   const { status, error } = useSelector((state) => state.auth);
 
   const handleSubmit = () => {
     dispatch(signupAsync({ email, username, password })).then((action) => {
       if (signupAsync.fulfilled.match(action)) {
-        navigate('/verify', { state: { email } });  // Pass email to OTP verification page
+        navigate('/verify', { state: { email } }); 
       }
     });
   };
 
   return (
+    <>
+    
+    <div className="welcom"><FontAwesomeIcon icon={faHandPaper} size="2x" className='hand-wave'/> Welcome! </div>
+
     <div className='signup-container'>
+      <img src={signImage} alt='signup' className='signup-image' />
+      <div className="line"></div>
       <div className='signup-box'>
         <h2 className='signup-title'>Signup</h2>
         <div className="signup-inner">
@@ -75,6 +82,8 @@ function Signup() {
         </div>
       </div>
     </div>
+    </>
+
   );
 }
 

@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+
+.otp-container{
+    text-align: center;
+    background-color: transparent;
+    border-radius: 30px;
+    box-shadow: 0 4px 8px rgba(221, 221, 211, 0.7);
+    text-align: center;
+    height: 85vh;
+    width: 35vw;
+    border-radius: 27px;
+
+}
+.otp-container p{
+    margin-top: 20px;
+    font-size: 18px;
+}
+.first-p{
+    margin-bottom: -10px;
+}
+
+.title{
+    font-size: 38px;
+    margin-bottom: 50px;
+    padding-top: 30px;
+}
+.icon{
+    font-size: 50px;
+    color: rgb(162, 172, 28);
+    margin-top: 20px;
+    
+    
+}
+.icon-maill{
+  position: relative;
+  top: 15px;
+  left: 17px
+}
+
+.otp-inputs {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 40px;
+    
+  }
+ 
+  
+  .otp-input {
+    text-align: center;
+    width: 50px;
+    height: 50px;
+    color: #2f4632;
+    font-size: 28px;
+    font-weight: bolder;
+    border-radius: 20px;
+    margin-top: 60px;
+    background-color: #f1f7f5;
+    border: 2px solid transparent; 
+    outline: none; 
+    transition: border-color 0.3s ease; 
+}
+
+.otp-input:focus {
+    border-color: #406646; 
+    outline: none;
+    border-width: 4px;
+  
+}
+
+  .title-otp{
+    color:  rgb(162, 172, 28);
+  }
+  .otp-button{
+    background-color: #406646;
+
+    color: #faf0f0;
+    font-size: 16px;
+    font-weight: 400;
+    border-radius: 15px;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 20px;
+    cursor: pointer;
+  }
+
+  .otp-button:hover{
+    background-color: rgb(73, 77, 24);
+
+  }

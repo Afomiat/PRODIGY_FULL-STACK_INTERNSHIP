@@ -41,9 +41,9 @@ func (sr *SignupReo) GetUserByEmail(ctx context.Context, Email string)(*domain.S
 	err := sr.collection.FindOne(ctx, filter).Decode(&user)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
-			return nil, nil // No user found
+			return nil, nil 
 		}
-		return nil, err // Other errors
+		return nil, err 
 	}
 	return &user, nil
 }

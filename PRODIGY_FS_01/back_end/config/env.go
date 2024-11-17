@@ -24,7 +24,6 @@ type Env struct {
 }
 
 func NewEnv() *Env {
-	// Load the .env file using godotenv
 	if err := godotenv.Load(); err != nil {
 		log.Fatalf("Error loading .env file: %v", err)
 	}
