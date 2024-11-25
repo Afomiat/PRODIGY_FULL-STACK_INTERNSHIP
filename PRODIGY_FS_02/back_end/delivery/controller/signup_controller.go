@@ -60,7 +60,7 @@ func (sc *SignupController) Verify(ctx *gin.Context) {
         return
     }
 
-    fmt.Println("Received OTP verification request:", otp)  // Add logging
+    fmt.Println("Received OTP verification request:", otp)  
 
     OtpResponse, err := sc.SignupUsecase.VerifyOtp(ctx, &otp)
     if err != nil {

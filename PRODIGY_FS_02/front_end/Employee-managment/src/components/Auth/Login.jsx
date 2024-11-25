@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loginAsync } from '../../redux/slices/authSlice';
 import { useNavigate, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope, faLock, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faUser, faLock, faEye, faEyeSlash , faHandPaper} from '@fortawesome/free-solid-svg-icons';
 import './Login.css';
-
+import loginImage from '../../assets/login.avif';
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -30,7 +30,11 @@ function Login() {
   }, [user, navigate]);
 
   return (
+    <>
+    <div className="welcom"><FontAwesomeIcon icon={faHandPaper} size="2x" className='hand-wave'/> Welcome <span className='back'>Back!</span> </div>
     <div className='login-container'>
+      <img src={loginImage} alt='login' className='login-image' />
+      <div className="line"></div>
       <div className='login-box'>
         <h2 className='login-title'>Login</h2>
         <div className="login-inner">
@@ -69,6 +73,7 @@ function Login() {
         </div>
       </div>
     </div>
+    </>
   );
 }
 

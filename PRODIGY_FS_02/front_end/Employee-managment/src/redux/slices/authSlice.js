@@ -21,13 +21,13 @@ export const signupAsync = createAsyncThunk('auth/signup', async (userInfo, { re
 });
 
 export const loginAsync = createAsyncThunk(
-  'auth/login', // Action type
+  'auth/login', 
   async (credentials, { rejectWithValue }) => {
     try {
-      const response = await login(credentials); // Make sure login is correctly defined in authApi.js
-      return response;  // Will be handled as payload in fulfilled case
+      const response = await login(credentials); 
+      return response;  
     } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);  // Handle error case
+      return rejectWithValue(error.response?.data || error.message);  
     }
   }
 );

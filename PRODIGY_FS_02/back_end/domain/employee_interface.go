@@ -14,10 +14,7 @@ type SignupUsecase interface {
 	SendOtp(cxt context.Context, user *User, stmpName, stmpPass string) error
 }
 
-// type SignupRepository interface {
-// 	CreateUser(ctx context.Context, user *SignupForm) error
-// 	GetUserByEmail(ctx context.Context, Email string) (*SignupForm, error)
-// }
+
 
 type OtpRepository interface {
 	GetOtpByEmail(ctx context.Context, email string) (*OTP, error)
@@ -42,9 +39,7 @@ type UserRepository interface {
 	GetAllUsers(c context.Context) ([]*User, error)
 	CreateUser(c context.Context, user *User) error
 	UpdateUser(c context.Context, user *User) error
-	// UpdatePassword(c context.Context, user *User) error
-	// PromoteUser(c context.Context, id primitive.ObjectID)  error
-	// DemoteUser(c context.Context, id primitive.ObjectID)  error
+
 	DeleteUser(c context.Context, id primitive.ObjectID) error
 }
 
@@ -54,14 +49,12 @@ type UserUsecase interface {
 	GetUserByUsername(c context.Context, username string) (*User, error)
 	GetAllUsers(c context.Context) ([]*User, error)
 	CreateUser(c context.Context, user *SignupForm, claims *JwtCustomClaims) error
-	// PromoteUser(c context.Context, id primitive.ObjectID,claims *JwtCustomClaims) error
-	// DemoteUser(c context.Context, id primitive.ObjectID,claims *JwtCustomClaims) error
+
 	UpdateUser(c context.Context, user *User,claims *JwtCustomClaims, existinguser *User) (*User, error)
 	DeleteUser(c context.Context, id primitive.ObjectID,claims *JwtCustomClaims) error
 }
 type TokenRepository interface {
 	SaveToken(ctx context.Context, token *Token) error
-	// FindTokenByAccessToken(ctx context.Context, accessToken string) (*Token, error)
-	// DeleteToken(ctx context.Context, tokenID primitive.ObjectID) error
+
 	FindTokenByRefreshToken(ctx context.Context, refreshToken string) (*Token, error)
 }

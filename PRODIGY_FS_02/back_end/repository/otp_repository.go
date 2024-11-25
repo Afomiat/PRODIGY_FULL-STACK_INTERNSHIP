@@ -27,10 +27,10 @@ func (op *OtpRepository) GetOtpByEmail(ctx context.Context, email string) (*doma
 
 	if err == mongo.ErrNoDocuments {
 		fmt.Println("No OTP found for email:", email)
-		return nil, nil // No OTP found
+		return nil, nil 
 	} else if err != nil {
 		fmt.Println("Error finding OTP:", err)
-		return nil, err // Some other error occurred
+		return nil, err 
 	}
 
 	fmt.Println("Found OTP:", otp)

@@ -47,7 +47,7 @@ func (uc *UserUsecase) CreateUser(c context.Context, user *domain.SignupForm, cl
 		Email:    user.Email,
 		Username: user.Username,
 		Password: user.Password,
-		Role:     "user",
+		Role:     domain.EmployeeRole,
 	}
 	err := employeeUtil.CanManipulateUser(claims, &aduser, "add")
 	if err != nil {

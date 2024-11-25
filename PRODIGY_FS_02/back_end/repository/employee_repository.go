@@ -14,18 +14,14 @@ type EmployeeRepo struct {
 	collection *mongo.Collection
 }
 
-// GetUserByID implements domain.UserRepository.
 func (u *EmployeeRepo) GetUserByID(c context.Context, id primitive.ObjectID) (*domain.User, error) {
-	// collection := u.database.Collection(u.collection)
 	filter := bson.M{"_id": id}
 	user := &domain.User{}
 	err := u.collection.FindOne(c, filter).Decode(user)
 	return user, err
 }
 
-// UpdateUser implements domain.UserRepository.
 func (u *EmployeeRepo) UpdateUser(c context.Context, user *domain.User) error {
-	// collection := u.database.Collection(u.collection)
 	filter := bson.M{"_id": user.ID}
 	update := bson.M{"$set": user}
 	_, err := u.collection.UpdateOne(c, filter, update)
@@ -60,9 +56,9 @@ func (u *EmployeeRepo) GetUserByUsername(ctx context.Context, username string) (
 	err := u.collection.FindOne(ctx, filter).Decode(&user)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
-			return nil, nil // No user found
+			return nil, nil 
 		}
-		return nil, err // Other errors
+		return nil, err 
 	}
 	return &user, nil
 }
@@ -74,14 +70,12 @@ func (u *EmployeeRepo) CreateUser(ctx context.Context, user *domain.User) error 
 }
 
 func (u *EmployeeRepo) DeleteUser(c context.Context, id primitive.ObjectID) error {
-	// collection := u.database.Collection(u.collection)
 	filter := bson.M{"_id": id}
 	_, err := u.collection.DeleteOne(c, filter)
 	return err
 }
 
 func (u *EmployeeRepo) GetAllUsers(c context.Context) ([]*domain.User, error) {
-	// collection := u.database.Collection(u.collection)
 	cursor, err := u.collection.Find(c, bson.M{})
 	if err != nil {
 		return nil, err

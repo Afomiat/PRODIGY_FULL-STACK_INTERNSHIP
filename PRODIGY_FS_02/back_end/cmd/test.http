@@ -4,7 +4,7 @@ Content-Type: application/json
 {
   "username": "all",
   "password": "123456789",
-  "email": "afomiat79@gmail.com"
+  "email": "bemnet026@gmail.com"
 }
 
 # POST http://localhost:8080/verify

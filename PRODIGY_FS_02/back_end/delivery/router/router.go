@@ -16,7 +16,6 @@ func Setup(env *config.Env, timeout time.Duration, db *mongo.Database, r *gin.En
 	NewLogInRouter(env, timeout, db, PublicRout)
 
 	protectedRouter := r.Group("")
-	// Middleware to verify AccessToken
 	protectedRouter.Use(middleware.RoleRequired(env, domain.AdminRole))
 	NewEmployeeRouter(env, timeout, db, protectedRouter)
 

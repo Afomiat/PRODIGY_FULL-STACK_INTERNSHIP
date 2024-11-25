@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/Afomiat/PRODIGY_FULL-STACK_INTERNSHIP/config"
@@ -10,46 +11,53 @@ import (
 )
 
 type EmployeeController struct {
-	EmployeeUsecase domain.UserUsecase
-	Env          *config.Env
+    EmployeeUsecase domain.UserUsecase
+    Env          *config.Env
 }
 
-func NewEmployeeController(EmployeeUsecase domain.UserUsecase,env *config.Env) *EmployeeController {
-	return &EmployeeController{
-		EmployeeUsecase: EmployeeUsecase,
-		Env:           env,
-	}
+func NewEmployeeController(EmployeeUsecase domain.UserUsecase, env *config.Env) *EmployeeController {
+    return &EmployeeController{
+        EmployeeUsecase: EmployeeUsecase,
+        Env:           env,
+    }
 }
 
 func (uc *EmployeeController) CreateUser(c *gin.Context) {
-	claims := c.MustGet("claim").(domain.JwtCustomClaims)
-	var user domain.SignupForm
+    claims := c.MustGet("claim").(*domain.JwtCustomClaims)
+    var user domain.SignupForm
 
-	if err := c.ShouldBindJSON(&user); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	returnedUser, _ := uc.EmployeeUsecase.GetUserByEmail(c, user.Email)
-	if returnedUser != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Email already exists"})
-		return
-	}
-	returnedUser, _ = uc.EmployeeUsecase.GetUserByUsername(c, user.Username)
-	if returnedUser != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Username already exists"})
-		return
-	}
+    if err := c.ShouldBindJSON(&user); err != nil {
+        fmt.Println("Error binding JSON:", err)
+        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+        return
+    }
+    fmt.Println("Received user data:", user)
 
-	err := uc.EmployeeUsecase.CreateUser(c, &user, &claims)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{"message": "User created successfully"})
+    returnedUser, _ := uc.EmployeeUsecase.GetUserByEmail(c, user.Email)
+    if returnedUser != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "Email already exists"})
+        return
+    }
+    returnedUser, _ = uc.EmployeeUsecase.GetUserByUsername(c, user.Username)
+    if returnedUser != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "Username already exists"})
+        return
+    }
+
+    err := uc.EmployeeUsecase.CreateUser(c, &user, claims)
+    if err != nil {
+        fmt.Println("Error creating user:", err)
+        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+        return
+    }
+    fmt.Println("User created successfully")
+    c.JSON(http.StatusOK, gin.H{"message": "User created successfully"})
 }
 
+
+
 func (uc *EmployeeController) UpdateUser(c *gin.Context) {
-	claims := c.MustGet("claim").(domain.JwtCustomClaims)
+	claims := c.MustGet("claim").(*domain.JwtCustomClaims)
 	id := c.Param("id")
 	objectID, _ := primitive.ObjectIDFromHex(id)
 	existingUser, _ := uc.EmployeeUsecase.GetUserByID(c, objectID)
@@ -64,7 +72,6 @@ func (uc *EmployeeController) UpdateUser(c *gin.Context) {
 	}
 	if user.Email != existingUser.Email {
 		print(user.Email)
-		// print(existingUser.Email)
 		euser, _ := uc.EmployeeUsecase.GetUserByEmail(c, user.Email)
 		if euser != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Email already exists"})
@@ -78,7 +85,7 @@ func (uc *EmployeeController) UpdateUser(c *gin.Context) {
 			return
 		}
 	}
-	resp, err := uc.EmployeeUsecase.UpdateUser(c, &user, &claims, existingUser)
+	resp, err := uc.EmployeeUsecase.UpdateUser(c, &user, claims, existingUser)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -87,21 +94,32 @@ func (uc *EmployeeController) UpdateUser(c *gin.Context) {
 }
 
 func (uc *EmployeeController) DeleteUser(c *gin.Context) {
-	claims := c.MustGet("claim").(domain.JwtCustomClaims)
-	id := c.Param("id")
-	objectID, _ := primitive.ObjectIDFromHex(id)
-	existingUser, _ := uc.EmployeeUsecase.GetUserByID(c, objectID)
-	if existingUser == nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "User not found"})
-		return
-	}
-	
-	err := uc.EmployeeUsecase.DeleteUser(c, objectID, &claims)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{"message": "User deleted successfully"})
+    claims := c.MustGet("claim").(*domain.JwtCustomClaims)
+    id := c.Param("id")
+    objectID, err := primitive.ObjectIDFromHex(id)
+    if err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID format"})
+        return
+    }
+
+    existingUser, err := uc.EmployeeUsecase.GetUserByID(c, objectID)
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        return
+    }
+    if existingUser == nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "User not found"})
+        return
+    }
+
+    err = uc.EmployeeUsecase.DeleteUser(c, objectID, claims)
+    if err != nil {
+        fmt.Println("Error deleting user:", err)
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        return
+    }
+    fmt.Println("User deleted successfully")
+    c.JSON(http.StatusOK, gin.H{"message": "User deleted successfully"})
 }
 
 func (uc *EmployeeController) GetUser(c *gin.Context) {

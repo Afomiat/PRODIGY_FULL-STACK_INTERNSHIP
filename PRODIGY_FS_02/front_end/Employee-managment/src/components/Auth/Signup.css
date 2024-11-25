@@ -1,0 +1,197 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap');
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: 'Sour Gummy',sans-serif; 
+ 
+  background: linear-gradient(50deg, rgb(19, 18, 18) 20%, rgb(36, 44, 43) 50%, rgb(37, 10, 2) 80%);
+
+  margin: 0;
+  color: #fff;
+}
+
+.signup-container {
+ width: 90%;
+ height: 450px;
+ border-color: transparent;
+ padding: 2rem;
+ border-radius: 30px;
+ box-shadow: 0 4px 8px rgba(221, 221, 211, 0.7);
+ text-align: center;
+ display: flex;
+
+}
+.signup-image{
+  width:  400px;
+  max-height: 400px;
+  border-radius: 33% 15% 57% 43% / 45% 36% 47% 15%;
+  overflow: hidden;
+  object-fit: cover; 
+  padding-right: 80px;
+  margin-top: 10px;
+
+  position: relative;
+  top: 50px;
+}
+
+.line{
+  height: 350px;
+  width: 1px;
+  background-color: #f3eeeb;
+  position: relative;
+  right: 20px;
+  top: 70px;
+}
+
+.signup-box{
+ width: 50%;
+ max-height: 440px;
+ position: relative;
+ top: 20px;
+ display: grid;
+ justify-content: center;
+ border-radius: 20px;
+ margin-left: -10px;
+}
+
+.signup-title {
+  font-size: 28px;
+  margin-bottom: 3rem;
+  color: #f3eeeb;
+}
+
+.welcom{
+  text-align: center;
+  position: relative;
+  top: 60px;
+  font-weight: bolder;
+  font-size: 38px;
+  font-family: "Sour Gummy", sans-serif;
+
+}
+.hand-wave { 
+  display: inline-block; 
+  animation: wave 2s infinite; 
+  transform-origin: center;
+  font-size: 40px;
+  color:rgb(162, 172, 28);
+ } 
+@keyframes wave {
+   0%, 100% { transform: rotate(0deg); } 
+   50% { transform: rotate(15deg); } }
+
+.signup-input {
+  width: 90%;
+  height: 40px;
+  padding-left: 2rem;
+  margin-right: 30px;
+  border-radius: 15px;
+  border: none;
+  color: #141313; 
+  font-size: 14px;
+  font-family: 'Roboto', sans-serif; 
+
+}
+
+.signup-input::placeholder{
+  color: #6d6b6a;
+  font-family: 'Roboto';
+  font-size: 14px;
+  padding-left: 10px;
+}
+
+#signup-password{
+  position: relative;
+  bottom: 40px;
+}
+#signup-username{
+  position: relative;
+  bottom: 20px;
+}
+
+.signup-button {
+  width: 46%;
+  padding: 0.75rem;
+
+  border: none;
+  border-radius: 4px;
+  background-color: #406646;
+
+  color: #f1efef;
+  font-size: 15px;
+  cursor: pointer;
+  border-radius: 15px;
+  position: relative;
+  bottom: 40px;
+
+}
+
+.signup-button:hover {
+  background-color: rgb(73, 77, 24);
+  color: #fff;
+}
+
+.signup-link {
+  color:rgb(162, 172, 28);
+  text-decoration: none;
+  font-weight: bold;
+  
+}
+
+.signup-link:hover {
+  text-decoration: underline;
+}
+.signup-p{
+  position: relative;
+  bottom: 40px;
+}
+
+.signup-error {
+  color: red;
+  margin-bottom: -2rem;
+}
+
+.signup-icon-mail {
+  position: relative;
+  right: 110px;
+  top: 32px;
+  color:rgb(162, 172, 28);
+  font-size: 15px;
+
+}
+
+
+#signup-email, #signup-username, #signup-password {
+  margin-bottom: 30px;
+  background-color: #dceecc;
+
+}
+.signup-icon-pass{
+    position: relative;
+    left: -110px;
+    font-size: 15px;
+    top: -2px;
+    transform: translateY(-50%);
+    color:rgb(162, 172, 28);    z-index: 1;
+}
+.signup-icon-user{
+  font-size: 15px;
+
+    position: relative;
+    right: 110px;
+    top: 9px;
+    color:rgb(162, 172, 28);    z-index: 1;
+   
+}
+.signup-toggle-password {
+   Position: relative;
+   cursor: pointer;
+   color:rgb(162, 172, 28);
+    bottom: 100px;
+   left: 108px;
+   font-size: 15px;
+
+}
