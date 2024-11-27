@@ -18,6 +18,6 @@ func Setup(env *config.Env, timeout time.Duration, db *mongo.Database, r *gin.En
 	protectedRouter := r.Group("")
 	protectedRouter.Use(middleware.RoleRequired(env, domain.AdminRole))
 	NewEmployeeRouter(env, timeout, db, protectedRouter)
-
+	NewAttendanceRouter(env, timeout, db, PublicRout)
 
 }

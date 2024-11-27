@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import EmployeeProfile from './EmployeeProfile';
 import AttendanceTracking from './AttendanceTracking';
-import { createEmployee, updateEmployee, deleteEmployee, getAllEmployees } from '../../api/authApi';
+import { createEmployee, updateEmployee, deleteEmployee, getAllEmployees, getAllAttendanceRecords } from '../../api/authApi';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
   const [employees, setEmployees] = useState([]);
   const [editingEmployee, setEditingEmployee] = useState(null);
+  const [attendanceRecords, setAttendanceRecords] = useState([]);
+
+  useEffect(() => {
+    fetchEmployees();
+    fetchAttendanceRecords();
+  }, []);
 
   const fetchEmployees = async () => {
     try {
@@ -16,21 +22,26 @@ const AdminDashboard = () => {
       console.error('Error fetching employees:', error);
     }
   };
-  
-  useEffect(() => {
-    fetchEmployees();
-  }, []);
-  
+
+  const fetchAttendanceRecords = async () => {
+    try {
+      const records = await getAllAttendanceRecords();
+      setAttendanceRecords(records);
+    } catch (error) {
+      console.error('Error fetching attendance records:', error);
+    }
+  };
+
   const handleSaveEmployee = async (employee) => {
     const formattedEmployee = {
-      username: employee.username, 
+      username: employee.username,
       password: employee.password,
       email: employee.email,
-      role: employee.role || "Employee" 
+      role: employee.role || 'Employee'
     };
-  
+
     console.log('Saving employee:', formattedEmployee);
-  
+
     try {
       if (editingEmployee) {
         await updateEmployee(editingEmployee._id, formattedEmployee);
@@ -43,31 +54,25 @@ const AdminDashboard = () => {
       console.error('Error saving employee:', error);
     }
   };
-  
-  
 
   const handleEditEmployee = (employee) => {
     setEditingEmployee(employee);
   };
-  
 
   const handleDeleteEmployee = async (id) => {
     try {
-      console.log('Deleting employee with ID:', id); 
+      console.log('Deleting employee with ID:', id);
       await deleteEmployee(id);
       fetchEmployees();
     } catch (error) {
       console.error('Error deleting employee:', error);
     }
   };
-  
-  
 
   return (
     <div>
       <p className='p-ad'> <span className='span-ad'>Welcome</span> to the Admin Dashboard</p>
       <EmployeeProfile onSave={handleSaveEmployee} initialData={editingEmployee} />
-      <AttendanceTracking />
       <h2>Employee List</h2>
       <ul>
         {employees.map((employee, index) => (
@@ -78,6 +83,9 @@ const AdminDashboard = () => {
           </li>
         ))}
       </ul>
+      <AttendanceTracking />
+
+     
     </div>
   );
 };

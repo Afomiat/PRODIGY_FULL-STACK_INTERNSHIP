@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8080/'; 
+const API_BASE_URL = 'http://localhost:8080/';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -22,7 +22,6 @@ api.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-
 
 export const refreshToken = async () => {
   try {
@@ -102,6 +101,21 @@ export const getEmployee = async (id) => {
 
 export const getAllEmployees = async () => {
   const response = await api.get('/employees/get_all_employee');
-  console.log(response.data)
+  console.log(response.data);
+  return response.data;
+};
+
+export const checkIn = async () => {
+  const response = await api.post('/attendance/clock_in');
+  return response.data;
+};
+
+export const checkOut = async () => {
+  const response = await api.post('/attendance/clock_out');
+  return response.data;
+};
+
+export const getAllAttendanceRecords = async () => {
+  const response = await api.get('/attendance/records');
   return response.data;
 };

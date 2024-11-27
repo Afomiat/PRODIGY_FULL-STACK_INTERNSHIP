@@ -10,8 +10,7 @@ import (
     "github.com/Afomiat/PRODIGY_FULL-STACK_INTERNSHIP/repository"
     "github.com/Afomiat/PRODIGY_FULL-STACK_INTERNSHIP/usecase"
     "github.com/Afomiat/PRODIGY_FULL-STACK_INTERNSHIP/delivery/controller"
-		"github.com/Afomiat/PRODIGY_FULL-STACK_INTERNSHIP/delivery/middleware"
-
+    "github.com/Afomiat/PRODIGY_FULL-STACK_INTERNSHIP/delivery/middleware"
 )
 
 func NewEmployeeRouter(env *config.Env, timeout time.Duration, db *mongo.Database, group *gin.RouterGroup) {
@@ -20,7 +19,7 @@ func NewEmployeeRouter(env *config.Env, timeout time.Duration, db *mongo.Databas
     empController := controller.NewEmployeeController(empUsecase, env)
 
     employeeGroup := group.Group("/employees")
-    employeeGroup.Use(middleware.RoleRequired(env, domain.Role("ADMIN")))
+    employeeGroup.Use(middleware.RoleRequired(env, domain.AdminRole)) // Ensure only admin can access these routes
 
     employeeGroup.POST("/create_employee", empController.CreateUser)
     employeeGroup.PUT("/update_employee/:id", empController.UpdateUser)

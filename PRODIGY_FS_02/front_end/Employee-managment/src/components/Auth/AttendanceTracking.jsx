@@ -1,23 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { getAllAttendanceRecords } from '../../api/authApi';
 
 const AttendanceTracking = () => {
-  const [attendance, setAttendance] = useState([]);
+  const [attendanceRecords, setAttendanceRecords] = useState([]);
 
-  const handleClockIn = () => {
-    setAttendance([...attendance, { type: 'Clock-in', time: new Date().toLocaleString() }]);
+  useEffect(() => {
+    fetchAttendanceRecords();
+  }, []);
+
+  const fetchAttendanceRecords = async () => {
+    try {
+      const records = await getAllAttendanceRecords();
+      console.log("Fetched attendance records: ", records);
+      setAttendanceRecords(records);
+    } catch (error) {
+      console.error('Error fetching attendance records:', error);
+    }
   };
 
-  const handleClockOut = () => {
-    setAttendance([...attendance, { type: 'Clock-out', time: new Date().toLocaleString() }]);
+  const formatDateTime = (dateTime) => {
+    const date = new Date(dateTime);
+    return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
   };
 
   return (
     <div>
-      <button onClick={handleClockIn}>Clock In</button>
-      <button onClick={handleClockOut}>Clock Out</button>
+      <h2>Attendance Records</h2>
       <ul>
-        {attendance.map((entry, index) => (
-          <li key={index}>{entry.type} at {entry.time}</li>
+        {attendanceRecords.map((record, index) => (
+          <li key={index}>
+            {record.user_id} - Clock In: {formatDateTime(record.clock_in)} - Clock Out: {record.clock_out && record.clock_out !== "0001-01-01T00:00:00Z" ? formatDateTime(record.clock_out) : 'N/A'}
+          </li>
         ))}
       </ul>
     </div>

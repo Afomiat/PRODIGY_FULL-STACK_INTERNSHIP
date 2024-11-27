@@ -1,10 +1,15 @@
 package domain
 
-import "go.mongodb.org/mongo-driver/bson/primitive"
+import (
+	"time"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
+)
 
 type Role string
 
 const (
+	Attendance = "attendance_records"
 	CollectionUser      = "employees"
 	AdminRole      Role = "ADMIN"
 	EmployeeRole       Role = "EMPLOYEE"
@@ -31,4 +36,14 @@ type Privilage struct {
 	Username string `json:"username"`
 	Email    string `json:"email"`
 	Role     Role   `json:"role"`
+}
+
+
+
+
+type AttendanceRecord struct {
+    ID       primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
+    UserID   primitive.ObjectID `bson:"user_id,omitempty" json:"user_id,omitempty"`
+    ClockIn  time.Time          `bson:"clock_in" json:"clock_in"`
+    ClockOut time.Time          `bson:"clock_out,omitempty" json:"clock_out,omitempty"`
 }

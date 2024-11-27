@@ -58,3 +58,19 @@ type TokenRepository interface {
 
 	FindTokenByRefreshToken(ctx context.Context, refreshToken string) (*Token, error)
 }
+
+
+
+
+type AttendanceUsecase interface {
+    ClockIn(ctx context.Context, userID primitive.ObjectID) error
+    ClockOut(ctx context.Context, userID primitive.ObjectID) error
+    GetAllAttendanceRecords(ctx context.Context) ([]AttendanceRecord, error)
+}
+
+type AttendanceRepository interface {
+    InsertAttendanceRecord(ctx context.Context, record *AttendanceRecord) error
+    FindLatestClockInRecord(ctx context.Context, userID primitive.ObjectID) (*AttendanceRecord, error)
+    UpdateAttendanceRecord(ctx context.Context, record *AttendanceRecord) error
+    GetAllRecords(ctx context.Context) ([]AttendanceRecord, error)
+}
