@@ -14,8 +14,9 @@ import (
 )
 
 func NewAttendanceRouter(env *config.Env, timeout time.Duration, db *mongo.Database, group *gin.RouterGroup) {
-    attendanceRepo := repository.NewAttendanceRepository(db,domain.Attendance)
-    attendanceUsecase := usecase.NewAttendanceUsecase(attendanceRepo)
+    attendanceRepo := repository.NewAttendanceRepository(db, domain.Attendance)
+    userRepo := repository.NewEmployeeRepo(db, domain.CollectionUser) // Add user repository
+    attendanceUsecase := usecase.NewAttendanceUsecase(attendanceRepo, userRepo) // Pass userRepo to usecase
     attendanceController := controller.NewAttendanceController(attendanceUsecase)
 
     attendanceGroup := group.Group("/attendance")

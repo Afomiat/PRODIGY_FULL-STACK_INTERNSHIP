@@ -44,6 +44,7 @@ type Privilage struct {
 type AttendanceRecord struct {
     ID       primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
     UserID   primitive.ObjectID `bson:"user_id,omitempty" json:"user_id,omitempty"`
+	Username        string             `bson:"username" json:"username"`
     ClockIn  time.Time          `bson:"clock_in" json:"clock_in"`
     ClockOut time.Time          `bson:"clock_out,omitempty" json:"clock_out,omitempty"`
 }

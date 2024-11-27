@@ -27,9 +27,10 @@ const AttendanceTracking = () => {
     <div>
       <h2>Attendance Records</h2>
       <ul>
+        
         {attendanceRecords.map((record, index) => (
           <li key={index}>
-            {record.user_id} - Clock In: {formatDateTime(record.clock_in)} - Clock Out: {record.clock_out && record.clock_out !== "0001-01-01T00:00:00Z" ? formatDateTime(record.clock_out) : 'N/A'}
+            {record.username} - Clock In: {formatDateTime(record.clock_in)} - Clock Out: {record.clock_out && record.clock_out !== "0001-01-01T00:00:00Z" ? formatDateTime(record.clock_out) : 'N/A'}
           </li>
         ))}
       </ul>

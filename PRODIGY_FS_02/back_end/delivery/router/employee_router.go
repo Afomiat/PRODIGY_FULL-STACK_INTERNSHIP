@@ -19,7 +19,7 @@ func NewEmployeeRouter(env *config.Env, timeout time.Duration, db *mongo.Databas
     empController := controller.NewEmployeeController(empUsecase, env)
 
     employeeGroup := group.Group("/employees")
-    employeeGroup.Use(middleware.RoleRequired(env, domain.AdminRole)) // Ensure only admin can access these routes
+    employeeGroup.Use(middleware.RoleRequired(env, domain.AdminRole)) 
 
     employeeGroup.POST("/create_employee", empController.CreateUser)
     employeeGroup.PUT("/update_employee/:id", empController.UpdateUser)

@@ -1,11 +1,12 @@
 package controller
 
 import (
-    "net/http"
+	"fmt"
+	"net/http"
 
-    "github.com/Afomiat/PRODIGY_FULL-STACK_INTERNSHIP/domain"
-    "github.com/gin-gonic/gin"
-    "go.mongodb.org/mongo-driver/bson/primitive"
+	"github.com/Afomiat/PRODIGY_FULL-STACK_INTERNSHIP/domain"
+	"github.com/gin-gonic/gin"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type AttendanceController struct {
@@ -62,6 +63,7 @@ func (ctrl *AttendanceController) ClockOut(c *gin.Context) {
 
 func (ctrl *AttendanceController) GetAllAttendanceRecords(c *gin.Context) {
     records, err := ctrl.usecase.GetAllAttendanceRecords(c.Request.Context())
+    fmt.Print("records", records)
     if err != nil {
         c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
         return

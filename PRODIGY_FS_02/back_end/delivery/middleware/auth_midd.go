@@ -31,14 +31,13 @@ func RoleRequired(env *config.Env, role domain.Role) gin.HandlerFunc {
         }
 
         if claims, ok := token.Claims.(*domain.JwtCustomClaims); ok && token.Valid {
-            fmt.Printf("User Role: %s\n", claims.Role) // Debug user role
             userRole := claims.Role
             if !strings.EqualFold(userRole, string(role)) {
                 c.JSON(http.StatusForbidden, gin.H{"error": "You do not have permission to access this resource"})
                 c.Abort()
                 return
             }
-            c.Set("claims", claims)
+            c.Set("claim", claims) // Ensure "claim" key is set in the context
             c.Set("userID", claims.UserID.Hex()) // Set the user ID
         } else {
             c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
@@ -48,7 +47,6 @@ func RoleRequired(env *config.Env, role domain.Role) gin.HandlerFunc {
         c.Next()
     }
 }
-
 
 
 
