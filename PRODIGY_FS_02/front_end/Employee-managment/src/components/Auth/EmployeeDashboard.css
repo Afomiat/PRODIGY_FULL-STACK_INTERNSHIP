@@ -1,10 +1,28 @@
 
 .p-emp{
-    margin-top: 20px;
-    font-size: 50px;
+    margin-top: -140px;
+    font-size: 30px;
 
 }
 .span-emp{
     color: rgb(162, 172, 28);
     ;
+}
+.employee-but{
+    margin-top: 150px;
+    margin-left: 60px;
+    display: flex;
+    gap: 30px;
+}
+.but-in, .but-out{
+    width: 80px;
+    height: 35px;
+    border-radius: 10px;
+  
+
+}
+.but-in, .but-out:hover{
+    background-color: rgb(63, 102, 78);
+    color: white;
+    cursor: pointer;
 }

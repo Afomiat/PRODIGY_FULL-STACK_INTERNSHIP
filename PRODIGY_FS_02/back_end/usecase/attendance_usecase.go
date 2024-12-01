@@ -11,7 +11,7 @@ import (
 
 type AttendanceUsecase struct {
     repo        domain.AttendanceRepository
-    userRepo    domain.UserRepository // Add user repository
+    userRepo    domain.UserRepository 
 }
 
 func NewAttendanceUsecase(repo domain.AttendanceRepository, userRepo domain.UserRepository) domain.AttendanceUsecase {

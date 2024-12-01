@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import './EmployeeProfile.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+ import { faIdBadge } from '@fortawesome/free-solid-svg-icons';
 
 const EmployeeProfile = ({ onSave, initialData }) => {
   const [username, setUsername] = useState('');
@@ -25,35 +28,55 @@ const EmployeeProfile = ({ onSave, initialData }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        placeholder="Username"
-        required
-      />
-      <input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="Password"
-        required
-      />
-      <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
-        required
-      />
-      <input
-        type="text"
-        value={role}
-        onChange={(e) => setRole(e.target.value)}
-        placeholder="Role"
-      />
-      <button type="submit">Save</button>
+    <form onSubmit={handleSubmit} className='profile-container'>
+<FontAwesomeIcon icon={faIdBadge} className="fa-badge" /> {/* Font Awesome badge icon */}      <div className="form-group">
+        <label htmlFor="username"></label>
+        <input
+          type="text"
+          id="username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          placeholder="Enter Username"
+          required
+        />
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="password"></label>
+        <input
+          type="password"
+          id="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Enter Password"
+          required
+        />
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="email"></label>
+        <input
+          type="email"
+          id="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Enter Email"
+          required
+        />
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="role"></label>
+        <input
+          type="text"
+          id="role"
+          value={role}
+          onChange={(e) => setRole(e.target.value)}
+          placeholder="Enter Role"
+        />
+      </div>
+
+      <button type="submit">Add Employee</button>
     </form>
   );
 };

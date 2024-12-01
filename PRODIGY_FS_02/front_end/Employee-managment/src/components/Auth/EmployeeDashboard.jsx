@@ -31,9 +31,12 @@ const EmployeeDashboard = () => {
   return (
     <div>
       <p className='p-emp'><span className='span-emp'>Welcome</span> to the Employee Dashboard</p>
-      <button onClick={handleCheckIn} disabled={isCheckedIn}>Clock In</button>
-      <button onClick={handleCheckOut} disabled={!isCheckedIn}>Clock Out</button>
-      <p>{status}</p>
+      <div className="employee-but">
+        <button className='but-in' onClick={handleCheckIn} disabled={isCheckedIn}>Clock In</button>
+        <button className='but-out'onClick={handleCheckOut} disabled={!isCheckedIn}>Clock Out</button>
+        <p>{status}</p>
+
+      </div>
     </div>
   );
 };

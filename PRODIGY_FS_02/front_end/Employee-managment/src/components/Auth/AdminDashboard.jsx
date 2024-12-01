@@ -3,11 +3,14 @@ import EmployeeProfile from './EmployeeProfile';
 import AttendanceTracking from './AttendanceTracking';
 import { createEmployee, updateEmployee, deleteEmployee, getAllEmployees, getAllAttendanceRecords } from '../../api/authApi';
 import './AdminDashboard.css';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEnvelope, faUser, faLock, faEye, faEyeSlash, faHandPaper } from '@fortawesome/free-solid-svg-icons';
 const AdminDashboard = () => {
   const [employees, setEmployees] = useState([]);
   const [editingEmployee, setEditingEmployee] = useState(null);
   const [attendanceRecords, setAttendanceRecords] = useState([]);
+  const [activeSection, setActiveSection] = useState('employees'); 
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false); 
 
   useEffect(() => {
     fetchEmployees();
@@ -57,6 +60,7 @@ const AdminDashboard = () => {
 
   const handleEditEmployee = (employee) => {
     setEditingEmployee(employee);
+    setActiveSection('addEmployee');
   };
 
   const handleDeleteEmployee = async (id) => {
@@ -69,23 +73,54 @@ const AdminDashboard = () => {
     }
   };
 
-  return (
-    <div>
-      <p className='p-ad'> <span className='span-ad'>Welcome</span> to the Admin Dashboard</p>
-      <EmployeeProfile onSave={handleSaveEmployee} initialData={editingEmployee} />
-      <h2>Employee List</h2>
-      <ul>
-        {employees.map((employee, index) => (
-          <li key={index}>
-            {employee.name} - {employee.username} - {employee.jobTitle}
-            <button onClick={() => handleEditEmployee(employee)}>Edit</button>
-            <button onClick={() => handleDeleteEmployee(employee._id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
-      <AttendanceTracking />
+  const renderSection = () => {
+    switch (activeSection) {
+      case 'attendance':
+        return <AttendanceTracking />;
+      case 'addEmployee':
+        return <EmployeeProfile onSave={handleSaveEmployee} initialData={editingEmployee} />;
+      default:
+        return (
+          <div className="emp-list">
+            <h2 className='emp-title'>Employee List</h2>
+            <ul>
+              {employees
+                .filter(employee => employee.role === 'EMPLOYEE')
+                .map((employee, index) => (
+                  <li key={index}>
 
-     
+                    <div className="names">
+                      <FontAwesomeIcon icon={faUser} className="icon-user" />
+                      {employee.name} {employee.username} {employee.jobTitle}
+
+                    </div>
+                    <button className='edit-but' onClick={() => handleEditEmployee(employee)}>Edit</button>
+                    <button className='delete-but' onClick={() => handleDeleteEmployee(employee._id)}>Delete</button>
+                  </li>
+                ))}
+            </ul>
+          </div>
+        );
+    }
+  };
+
+  return (
+    <div className="admin-dashboard">
+      <div className={`sidebar ${isSidebarCollapsed ? 'collapsed' : ''}`}>
+        <button className="collapse-button" onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}>
+          {isSidebarCollapsed ? '➤' : '➤'}
+        </button>
+        {!isSidebarCollapsed && (
+          <div className="sidebar-content">
+            <button onClick={() => setActiveSection('employees')}>Employee List</button>
+            <button onClick={() => setActiveSection('attendance')}>Attendance</button>
+            <button onClick={() => setActiveSection('addEmployee')}>Add Employee</button>
+          </div>
+        )}
+      </div>
+      <div className="main-content">
+        {renderSection()}
+      </div>
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getAllAttendanceRecords } from '../../api/authApi';
+import './Attendance.css';
 
 const AttendanceTracking = () => {
   const [attendanceRecords, setAttendanceRecords] = useState([]);
@@ -24,15 +25,35 @@ const AttendanceTracking = () => {
   };
 
   return (
-    <div>
+    <div className='attend'>
       <h2>Attendance Records</h2>
-      <ul>
+      <div className="title-att">
+        <span className='emp'>Employee</span>
         
-        {attendanceRecords.map((record, index) => (
-          <li key={index}>
-            {record.username} - Clock In: {formatDateTime(record.clock_in)} - Clock Out: {record.clock_out && record.clock_out !== "0001-01-01T00:00:00Z" ? formatDateTime(record.clock_out) : 'N/A'}
-          </li>
-        ))}
+        <span className='in'>clock-in</span>
+        <span className='out'>clock-out</span>
+      </div>
+      <ul>
+        <div className="contener">
+          {attendanceRecords.map((record, index) => (
+            <ul key={index}>
+              <div className="content">
+                <div className="attendance-name">
+                  {record.username}
+                </div>
+                <div className="clock">
+                  <div className='clock-in'>
+                    {formatDateTime(record.clock_in && record.clock_in !== "0001-01-01T00:00:00Z" ? record.clock_in : 'No Record')}
+                  </div>
+                
+                  <div className='clock-out'>
+                     {record.clock_out && record.clock_out !== "0001-01-01T00:00:00Z" ? formatDateTime(record.clock_out) : 'No Record'}
+                  </div>
+                </div>
+              </div>
+            </ul>
+          ))}
+        </div>
       </ul>
     </div>
   );
